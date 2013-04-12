@@ -29,8 +29,25 @@ require File.expand_path(File.dirname(__FILE__) + '/edgecase')
 #
 # Your goal is to write the score method.
 
+def histogram(arr)
+  histo = Hash.new(0)
+  for num in arr
+      histo[num] += 1
+  end
+  return histo
+end
+
 def score(dice)
-  # You need to write this method
+  histo = histogram(dice)
+  score = 0
+  #ones are worth 1000 per 3, plus 100 for each additional
+  score += 1000 * (histo[1]/3).floor + 100 * (histo[1] % 3)
+  for val in (2..6)
+    score += val*100 * (histo[val]/3).floor
+  end
+  score += 50 * (histo[5] % 3)
+
+  return score
 end
 
 class AboutScoringProject < EdgeCase::Koan
